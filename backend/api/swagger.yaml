@@ -1,0 +1,1970 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a sample server api for beacon based attendance system"
+  version: "1.0.0"
+  title: "Swagger beacon-based attendance system"
+  contact:
+    email: "mdsazzadul.islam@tuni.fi"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1:8080"
+basePath: "/v1"
+paths:
+  /user/signup:
+    post:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      operationId: "signUp"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The user for signup"
+        required: true
+        schema:
+          $ref: '#/definitions/userSignUp'
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid input"
+      x-swagger-router-controller: "User"
+  /user/login:
+    post:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "The user for login"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+              format: password
+          additionalProperties: false
+          required:
+            - email
+            - password
+          example:
+            password: "password"
+            email: "teacher.one@tuni.fi"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: integer
+                format: int32
+                description: The user ID.
+              user_id:
+                type: string
+                format: uuid
+              token:
+                type: string
+                description: The user api token.
+              user_type:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+            required:
+              - id
+              - token
+              - user_type
+              - user_id
+              - first_name
+              - last_name
+            additionalProperties: false
+        400:
+          description: "Invalid username/password supplied"
+      x-swagger-router-controller: "User"
+  /users:
+    get:
+      tags:
+      - user
+      summary: all users list
+      description: Get all users
+      operationId: allUsers
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: integer
+                format: int32
+                description: The user ID.
+              user_id:
+                type: string
+                format: uuid
+              user_type:
+                type: string
+              first_name:
+                type: string
+              last_name:
+                type: string
+            required:
+              - id
+              - user_type
+              - user_id
+              - first_name
+              - last_name
+            additionalProperties: false
+      x-swagger-router-controller: "User"
+  /beacon:
+    post:
+      tags:
+      - "beacon"
+      summary: "adding a Beacon"
+      description: "Add a new Beacon"
+      operationId: "addBeacon"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "header"
+          name: "api_key"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "beacon"
+          description: "beacon object that needs to be added to the database"
+          required: true
+          schema:
+            $ref: "#/definitions/beaconBody"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid data"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Beacon"
+    get:
+      tags:
+      - "beacon"
+      summary: "Get all Beacon"
+      description: "Get all Beacon from database"
+      operationId: "getBeacons"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/beaconsList"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Beacon"
+  /beacon/{beaconId}:
+    get:
+      tags:
+      - "beacon"
+      summary: "Find an beacon by its ID"
+      description: "IDs must be positive integers"
+      operationId: "getBeaconById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: "beaconId"
+        in: "path"
+        description: "ID of beacon that needs to be fetched"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/beaconItem"
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Beacon"
+    put:
+      tags:
+      - "beacon"
+      summary: "Update an beacon by its ID"
+      description: "IDs must be positive integers"
+      operationId: "updateBeacon"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: beaconId
+        in: path
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int64"
+      - name: "beacon"
+        in: "body"
+        description: "beacon object that needs to be updated to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/updateBeaconItem"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Beacon"
+    delete:
+      tags:
+      - "beacon"
+      summary: "Delete a beacon"
+      description: "Delete a beacon from database for path beaconId"
+      operationId: "deleteBeacon"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "beaconId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int64"
+        description: "ID of the beacon"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Beacon"
+  /room:
+    post:
+      tags:
+      - "room"
+      summary: "adding a room"
+      description: "Add a new Room"
+      operationId: "addRoom"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "room object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/roomBody"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid input"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Room"
+    get:
+      tags:
+      - "room"
+      summary: "Get all room"
+      description: "Get all room from database"
+      operationId: "getAllRooms"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/roomList"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Room"
+  /room/{roomId}:
+    get:
+      tags:
+      - "room"
+      summary: "Find an room by its ID"
+      description: "IDs must be positive integers"
+      operationId: "getRoomById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "roomId"
+        description: "ID of room that needs to be fetched"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/roomItem"
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Room"
+    put:
+      tags:
+      - "room"
+      summary: "Update an room by its ID"
+      description: "IDs must be positive integers"
+      operationId: "updateRoom"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "roomId"
+        description: "ID of the room"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+      - in: "body"
+        name: "body"
+        description: "room object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/roomBody"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid input"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Room"
+    delete:
+      tags:
+      - "room"
+      summary: "Delete a room"
+      description: "Delete a room from database for path roomId"
+      operationId: "deleteRoom"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "roomId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+        description: "ID of the room"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Room"
+  /beaconRoom/{roomId}:
+    post:
+      tags:
+      - "association"
+      summary: "add association between room and beacon"
+      description: "Add a new association between Room and Beacon"
+      operationId: "addRoomBeaconAssociation"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "roomId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+        description: "ID of the room"
+      - in: "body"
+        name: "body"
+        description: "beacons ids that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/beaconIds"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Association"
+    get:
+      tags:
+      - "association"
+      summary: "get beacons in a room"
+      description: "Get all beacons associated in a room"
+      operationId: "getBeaconInRoom"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "roomId"
+        description: "ID of room"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/beaconsList'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Association"
+  /beaconRoom:
+    get:
+      tags:
+      - "association"
+      summary: "get all associations"
+      description: "get all beacon and room associations"
+      operationId: "getAllAssociations"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/allAssociations'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Association"
+    post:
+      tags:
+      - "association"
+      summary: "add association between room and beacon"
+      description: "Add a new association between Room and Beacon"
+      operationId: "addAssociation"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "one room id and one beacon id"
+        required: true
+        schema:
+          $ref: "#/definitions/roomIdBeaconId"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Association"
+    delete:
+      tags:
+      - "association"
+      summary: "delete an association"
+      description: "Delete an existing association between room and beacon"
+      operationId: "deleteAssociation"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "one room id and one beacon id"
+        required: true
+        schema:
+          $ref: "#/definitions/roomIdBeaconId"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid ID supplied"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Association"
+  /course:
+    post:
+      tags:
+      - "course"
+      summary: "Add a new course"
+      operationId: "addCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Course object in body property"
+        required: true
+        schema:
+          $ref: '#/definitions/addCourse'
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid data"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Course"
+    get:
+      tags:
+      - "course"
+      summary: "Get all course"
+      description: "Get all course from database"
+      operationId: "getCourses"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/courseList'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Course"
+  /teacherCourses:
+    get:
+      tags:
+      - "course"
+      summary: "Get all course where user is course personal"
+      description: "Get all course from database where user is course personal"
+      operationId: "getTeacherWiseCourses"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/courseList'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Course"
+  /course/{courseId}:
+    get:
+      tags:
+      - "course"
+      summary: "Find an course by its ID"
+      description: "IDs must be positive integers"
+      operationId: "getCourseById"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: string
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that needs to be fetched"
+        required: true
+        type: integer
+        minimum: 1
+        format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/courseInfo'
+        401:
+          description: Authorization failed
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Course"
+    put:
+      tags:
+      - "course"
+      summary: "Update an course by its ID"
+      description: "ID must be positive integers"
+      operationId: "updateCourse"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: path
+        name: courseId
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+      - in: "body"
+        name: "body"
+        description: "course object that needs to be updated to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/updateCourseItem"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid data"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Course"
+    delete:
+      tags:
+      - "course"
+      summary: "Delete a course"
+      description: "Delete a course from database for path roomId"
+      operationId: "deleteCourse"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "courseId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+        description: "ID of the course"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Course"
+  /event:
+    get:
+      tags:
+      - "Event"
+      summary: "Get all the events"
+      description: "Get all the events"
+      operationId: "getAllEvents"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: string
+      responses:
+        200:
+          description: Get all events
+          schema:
+            $ref: '#/definitions/userEventList'
+        401:
+          description: Authorization failed
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+    post:
+      tags:
+        - "Event"
+      summary: "add a new event"
+      description: "Add a new event"
+      operationId: "addEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Adding a new event"
+        required: true
+        schema:
+          $ref: "#/definitions/newEvent"  
+      responses:
+        201:
+          description: event created
+        400:
+          description : Invalid data
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /event/eventStatus/{eventId}:
+    put:
+      tags:
+      - "Event"
+      summary: Active/deactive the event
+      description: "Teacher can active/deactive the event. When the event is active, student can give attendance."
+      operationId: "changeEventStatus"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "eventId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+        description: "ID of the event"
+      responses:
+        201:
+          description: event status changed
+          schema:
+            type: "object"
+            properties:
+              status:
+                type: boolean
+              message:
+                type: string
+        400:
+          description : Invalid data
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /event/getEventsByEventPersonal:
+    get:
+      tags:
+        - "Event"
+      description: "Get all the event assigned to the user"
+      summary: "Show all the events assigned by the user"
+      operationId: "getAllEventsAssignedToUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: Ok
+          schema: 
+            $ref: "#/definitions/userEventList"
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /event/{eventId}:
+    get:
+      tags: 
+      - "Event"
+      summary: "Show the detail of an individual event"
+      description: "Get all the event" 
+      operationId: "getEventbyId"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: "eventId"
+        in: "path"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int64"
+        description: "ID of the event"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/eventDetails'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+    put:
+      tags: 
+        - "Event"
+      summary: "Update and event"
+      description: "Update and event"
+      operationId: "updateEvent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "eventId"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int32"
+        description: "ID of the event"
+      - in: "body"
+        name: "body"
+        description: "update an event details by the ID"
+        required: true
+        schema:
+          $ref: "#/definitions/updateEventBody"
+      responses:
+        201:
+          description: event updated
+        400:
+          description : Invalid data
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+    delete:
+      tags: 
+        - "Event"
+      summary: "delete an event"
+      description: Delete an event. Either person who created the event or who is assigned to take the event can delete.
+      operationId: "deleteEvent"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: "eventId"
+        in: "path"
+        required: true
+        type: "integer"
+        minimum: 1
+        format: "int64"
+        description: "ID of the event"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid data"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /event/attendanceResult:
+    get:
+      tags:
+      - Event
+      summary: "Get student list from a event attendance"
+      description: "Get student list from a event attendance" 
+      operationId: "attendanceResult"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: "eventId"
+        in: "query"
+        type: "integer"
+        minimum: 1
+        format: "int64"
+        description: "ID of the event"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/eventAttendanceStudentInfo'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /event/course/{courseId}:
+    get:
+      tags:
+      - Event
+      summary: "Get events list for a course"
+      description: "Get events list for a course"
+      operationId: "courseEvents"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      - name: "courseId"
+        in: "path"
+        type: "integer"
+        required: true
+        minimum: 1
+        format: "int64"
+        description: "ID of the course"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/userEventList'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+  /eventSumByPersonal:
+    get:
+      tags:
+      - "Event"
+      summary: returns events summary assigned for a course personal
+      description: Returns events summary assigned for a course personal
+      operationId: eventSumByPersonal
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "api_key"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/eventSumByPersonal'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      security:
+        - api_key: []
+      x-swagger-router-controller: "Event"
+
+  /attendance/searchBeacon:
+    post:
+      tags:
+      - "attendance"
+      summary: "Filter from a list of beacons"
+      operationId: "searchBeacon"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object in body property"
+        required: true
+        schema:
+          $ref: '#/definitions/arrayBeaconsApp'
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/filteredBeacons'
+        400:
+          description: "Invalid data"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Attendance"
+  /attendance/takeAttendance:
+    post:
+      tags:
+      - "attendance"
+      summary: "Take attendance from student"
+      operationId: "takeAttendance"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Course object in body property"
+        required: true
+        schema:
+          $ref: '#/definitions/takeAttendanceBody'
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        400:
+          description: "Invalid data"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        401:
+          description: "Authorization failed"
+          schema:
+            $ref: '#/definitions/responseWithMessage'
+        404:
+          description: "The resource you are looking is not found."
+          schema:
+            $ref: '#/definitions/404'
+      x-swagger-router-controller: "Attendance"
+definitions:
+  '404':
+    type: object
+    additionalProperties: false
+    properties:
+      error:
+        type: string
+    required:
+      - error
+  responseWithMessage:
+    type: object
+    additionalProperties: false
+    properties:
+      message:
+        type: string
+    required:
+      - message
+  userSignUp:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+        minLength: 8
+      userType:
+        type: string
+        enum: ['student', 'teacher', 'admin']
+    example:
+      password: "password"
+      email: "email@email.com"
+      firstName: "First name"
+      lastName: "Last name"
+      userType: "student"
+    additionalProperties: false
+    required:
+      - email
+      - password
+      - firstName
+      - lastName
+      - userType
+  beaconBody:
+    type: object
+    additionalProperties: false
+    properties:
+      macAddress:
+        description: The MAC address of the Bluetooth point. Address with
+            colon (:) or hyphen (-) separators, upper or lower case hex digits.
+        type: string
+        pattern: '^(([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2})|(([a-zA-Z0-9]{2}-){5}[a-zA-Z0-9]{2})$'
+    required:
+      - macAddress
+    example:
+      {
+        macAddress: '7C:D1:C3:19:BC:EE'
+      }
+  beaconItem:
+    type: object
+    additionalProperties: false
+    properties:
+      id:
+        type: integer
+        format: int64
+      mac_address:
+        description: The MAC address of the Bluetooth point. Address with
+            colon (:) or hyphen (-) separators, upper or lower case hex digits.
+        type: string
+        pattern: '^(([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2})|(([a-zA-Z0-9]{2}-){5}[a-zA-Z0-9]{2})$'
+      active_status:
+        type: boolean
+    required:
+      - id
+      - mac_address
+      - active_status
+  beaconsList:
+    type: array
+    items:
+      $ref: '#/definitions/beaconItem'
+  updateBeaconItem:
+    type: object
+    additionalProperties: false
+    properties:
+      macAddress:
+        description: The MAC address of the Bluetooth point. Address with
+            colon (:) or hyphen (-) separators, upper or lower case hex digits.
+        type: string
+        pattern: '^(([a-zA-Z0-9]{2}:){5}[a-zA-Z0-9]{2})|(([a-zA-Z0-9]{2}-){5}[a-zA-Z0-9]{2})$'
+      activeStatus:
+        type: boolean
+    required:
+      - macAddress
+      - activeStatus
+    example: {
+      macAddress: '7C:D1:C3:19:BC:EE',
+        activeStatus: true
+      }
+  roomBody:
+    type: "object"
+    additionalProperties: false
+    properties:
+      name:
+        type: string
+        minLength: 1
+        example: "TC-110"
+    required:
+      - name
+  roomItem:
+    type: object
+    additionalProperties: false
+    properties:
+      id:
+        type: integer
+        format: int32
+      name:
+        type: string
+    required:
+      - id
+      - name
+  roomList:
+    type: array
+    items:
+      $ref: "#/definitions/roomItem"
+  beaconIds:
+    type: array
+    items:
+      type: object
+      properties:
+        beaconId:
+          type: integer
+          format: int32
+      required:
+      - beaconId
+      additionalProperties: false
+    example:
+      [
+        {
+          beaconId: 1
+        },
+        {
+          beaconId: 2
+        }
+      ]
+  roomIdBeaconId:
+    type: object
+    properties:
+      roomId:
+        type: integer
+        format: int32
+      beaconId:
+        type: integer
+        format: int32
+    required:
+    - roomId
+    - beaconId
+    additionalProperties: false
+    example: {
+      roomId: 1,
+      beaconId: 1
+    }
+  allAssociations:
+    type: array
+    items:
+      type: object
+      properties:
+        beacon_id:
+          type: integer
+          format: int32
+        mac_address:
+          type: string
+        room_id:
+          type: integer
+          format: int32
+        room_name:
+          type: string
+      required:
+      - beacon_id
+      - mac_address
+      - room_id
+      - room_name
+    example: [
+      {
+        "beacon_id": 1,
+        "mac_address": '7C:D1:C3:19:BC:EE',
+        "room_id": 1,
+        "room_name": "TC-110"
+      },
+      {
+        "beacon_id": 2,
+        "mac_address": '7C:D1:C3:19:BC:EA',
+        "room_id": 1,
+        "room_name": "TC-110"
+      }
+    ]
+  addCourse:
+    type: object
+    properties:
+      courseCode:
+        type: string
+        minLength: 1
+      courseName:
+        type: string
+        minLength: 1
+      coursePersonal:
+        type: array
+        items:
+          type: integer
+          format: int32
+        minItems: 1
+        uniqueItems: true
+    additionalProperties: false
+    required:
+      - courseCode
+      - courseName
+      - coursePersonal
+    example: {
+        courseCode: "TIE-20106",
+        courseName: "Data Structures and Algorithms",
+        coursePersonal: [1, 2]
+      }
+  courseItem:
+    type: object
+    properties:
+      course_id:
+        type: integer
+        format: int32
+      course_code:
+        type: string
+      course_name:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+    additionalProperties: false
+    required:
+    - course_id
+    - course_code
+    - course_name
+    - first_name
+    - last_name
+  courseInfo:
+    type: object
+    properties:
+      course_id:
+        type: integer
+        format: int32
+      course_code:
+        type: string
+      course_name:
+        type: string
+      course_personal:
+        type: array
+        items:
+          type: object
+          properties:
+            user_id:
+              type: integer
+              format: int32
+            first_name:
+              type: string
+            last_name:
+              type: string
+          required:
+          - user_id
+          - first_name
+          - last_name
+    additionalProperties: false
+    required:
+    - course_id
+    - course_code
+    - course_name
+    - course_personal
+    example: 
+      {
+        "course_id": 43,
+        "course_code": "TIE-20106",
+        "course_name": "Data Structures and Algorithms",
+        "course_personal": [
+          {
+            "id": 2,
+            "first_name": "teacher",
+            "last_name": "one"
+          }
+        ]
+      }
+  courseList:
+    type: array
+    items:
+      $ref: '#/definitions/courseInfo'
+  updateCourseItem:
+    type: object
+    properties:
+      courseCode:
+        type: string
+        minLength: 1
+      courseName:
+        type: string
+        minLength: 1
+      coursePersonal:
+        type: array
+        items:
+          type: integer
+          format: int32
+        minItems: 1
+        uniqueItems: true
+    example:
+      courseCode: "TIE-20106"
+      courseName: "Data Structures and Algorithms"
+      coursePersonal: [1, 2]
+    additionalProperties: false
+    required:
+      - courseCode
+      - courseName
+      - coursePersonal
+  newEvent:
+    type: object
+    properties:
+      courseId:
+        type: integer
+      eventPersonal:
+        type: integer  
+      eventName:
+        type: string
+        minLength: 5
+      eventType:
+        type: string
+        enum: ['class', 'exercise']
+      roomId:
+        type: integer
+      startDate:
+        description: Start date of event
+        type: string
+        pattern: '(^\d{4}-(?:0[0-9]{1}|1[0-2]{1})-[0-9]{2})$'
+      endDate:
+        description: End date of event
+        type: string
+        pattern: '(^\d{4}-(?:0[0-9]{1}|1[0-2]{1})-[0-9]{2})$'
+      startTime:
+        description: Start time of event
+        type: string
+        pattern: '(^\d{2}:\d{2}:\d{2})$'
+      endTime:
+        description: End time of event
+        type: string
+        pattern: '(^\d{2}:\d{2}:\d{2})$'
+      recurrent:
+        description: recurrent events
+        type: boolean
+        default: false
+      everyAfter:
+        description: repeat event every after given number
+        type: number
+      everyAfterType:
+        description: type of every after
+        type: string
+        enum: ['day', 'week']
+    example:
+      courseId: 0
+      eventPersonal: 0
+      eventName: "DIP Lecture 1"
+      eventType: "class"
+      roomId: 0
+      startDate: "2019-11-10"
+      endDate: "2019-11-10"
+      startTime: "14:00:19"
+      endTime: "16:00:19"
+      recurrent: false
+      everyAfter: 1
+      everyAfterType: 'day'
+    additionalProperties: false
+    required:
+      - courseId
+      - eventPersonal
+      - eventName
+      - eventType
+      - roomId
+      - startDate
+      - endDate
+      - startTime
+      - endTime
+  userEventList:
+    type: "array"
+    items:
+      $ref: "#/definitions/eventDetails"
+  eventDetails:
+    type: object
+    properties:
+      id:
+        type: integer
+      courseId:
+        type: integer
+      courseCode:
+        type: string
+      courseName:
+        type: string
+      eventPersonal:
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
+      eventname:
+        type: string
+      eventType:
+        type: string
+      roomId:
+        type: integer
+      roomName:
+        type: string
+      startTime:
+        format: date-time
+        description: startTime
+        type: string
+      endTime:
+        format: date-time
+        description: endtTime
+        type: string
+      activeStatus:
+        type: boolean
+    example:
+      id: 1
+      courseId: 1
+      courseCode: 'TIE-00000'
+      courseName: 'TEST COURSE'
+      eventPersonal: 1
+      firstName: 'First name'
+      lastName: 'Last name'
+      eventname: 'DIP Lecture 1'
+      eventType: 'class'
+      roomId: 1
+      roomName: 'TC-111'
+      startDateTime: "2019-11-22 08:00:19"
+      endDateTime: "2019-11-22 10:00:19"
+    additionalProperties: false
+  updateEventBody:
+    type: object
+    additionalProperties: false
+    properties:
+      courseId:
+        type: integer
+      eventPersonal:
+        type: integer  
+      eventName:
+        type: string
+      eventType:
+        type: string
+      roomId:
+        type: integer
+      startDate:
+        description: Start date of event
+        type: string
+        pattern: '(^\d{4}-(?:0[0-9]{1}|1[0-2]{1})-[0-9]{2})$'
+      endDate:
+        description: End date of event
+        type: string
+        pattern: '(^\d{4}-(?:0[0-9]{1}|1[0-2]{1})-[0-9]{2})$'
+      startTime:
+        description: Start time of event
+        type: string
+        pattern: '(^\d{2}:\d{2}:\d{2})$'
+      endTime:
+        description: End time of event
+        type: string
+        pattern: '(^\d{2}:\d{2}:\d{2})$'
+    example:
+      courseId: 1
+      eventPersonal: 2
+      eventName: "DIP Lecture 1"
+      eventType: "class"
+      roomId: 1
+      startDate: "2019-11-10"
+      startTime: "14:00:19"
+      endDate: "2019-11-10"
+      endTime: "15:00:19"
+    required:
+      - courseId
+      - eventPersonal
+      - eventName
+      - eventType
+      - roomId
+      - startDate
+      - endDate
+      - startTime
+      - endTime
+  arrayBeaconsApp:
+    type: array
+    items:
+      type: string
+    example: [
+      '7C:D1:C3:19:BC:EE',
+      '7C:D1:C3:19:BC:EF'
+    ]
+  filteredBeacons:
+    type: array
+    items:
+      type: object
+      properties:
+        course_name:
+          type: string
+        room_name:
+          type: string
+        event_id:
+          type: integer
+          format: int32
+      required:
+      - course_name
+      - room_name
+      - event_id
+      additionalProperties: false
+    example: [
+      {
+        room_name: 'TC-110',
+        course_name: 'Data Structures and Algorithms',
+        event_id: 10
+      }
+    ]
+  eventStatus:
+    type: object
+    properties:
+      status:
+        type: boolean
+    required:
+    - status
+    example: {
+      status: false
+    }
+  takeAttendanceBody:
+    type: object
+    properties:
+      eventId:
+        type: integer
+        format: int32
+      studentId:
+        type: integer
+        format: int32
+    required:
+    - eventId
+    - studentId
+    example: {
+      eventId: 1,
+      studentId: 1
+    }
+  eventAttendanceStudentInfo:
+    type: array
+    items:
+      type: object
+      properties:
+        student_id:
+          type: integer
+          format: int32
+        student_name:
+          type: string
+        attendance_time:
+          type: string
+        event_name:
+          type: string
+        event_id:
+          type: integer
+          format: int32
+      required:
+      - student_id
+      - student_name
+      - attendance_time
+      - event_name
+      - event_id
+      additionalProperties: false
+    example: [
+      {
+        student_id: 1,
+        student_name: 'Student One',
+        attendance_time: '2019-11-22 09:40:19',
+        event_name: 'DIP Lecture 1',
+        event_id: 3
+      },
+      {
+        student_id: 2,
+        student_name: 'Student Two',
+        attendance_time: '2019-11-22 09:40:49',
+        event_name: 'DIP Lecture 1',
+        event_id: 3
+      }
+    ]
+  eventSumByPersonal:
+    type: array
+    items:
+      type: object
+      properties:
+        course_id:
+          type: integer
+          format: int32
+        course_code:
+          type: string
+        course_name:
+          type: string
+        event_type:
+          type: array
+          items:
+            type: object
+            properties:
+              type_name:
+                type: string
+              total_event:
+                type: integer
+                format: int32
+              next_event:
+                type: string
+              room_name:
+                type: string
+              next_event_id:
+                type: integer
+                format: int32
+      additionalProperties: false
+    example:
+      [
+        {
+          "course_id": 21,
+          "course_name": "Data Structures and Algorithms",
+          "course_code": "TIE-20106",
+          "event_type": [
+            {
+              "type": "class",
+              "total_event": 14,
+              "next_event": "2020-01-21 14:00:19",
+              "room_name": "TC-110",
+              "next_event_id": 10
+            },
+            {
+              "type": "exercise",
+              "total_event": 14,
+              "next_event": "2020-01-21 17:00:00",
+              "room_name": "TC-110",
+              "next_event_id": 20
+            }
+          ]
+        },
+        {
+          "course_id": 23,
+          "course_name": "WW2",
+          "course_code": "TIE-23157",
+          "event_type": [
+            {
+              "type": "class",
+              "total_event": 14,
+              "next_event": "",
+              "room_name": "",
+              "next_event_id": ""
+            }
+          ]
+        }
+      ]
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "X-API-KEY"
+    in: "header"

@@ -1,0 +1,1577 @@
+[
+    {
+        "id": "875b8187.8a65b",
+        "type": "tab",
+        "label": "Event_api_test",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5c53ae2e.53309",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 220,
+        "wires": [
+            [
+                "dd9464e1.d5c418"
+            ]
+        ]
+    },
+    {
+        "id": "623af1d1.4b53d",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "bearer",
+        "x": 790,
+        "y": 220,
+        "wires": [
+            [
+                "cf776fe2.6ce6f",
+                "1c986580.fc2b1a"
+            ]
+        ]
+    },
+    {
+        "id": "cf776fe2.6ce6f",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "dd9464e1.d5c418",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "623af1d1.4b53d"
+            ]
+        ]
+    },
+    {
+        "id": "69afdcf7.300d84",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 520,
+        "y": 140,
+        "wires": [
+            [
+                "623af1d1.4b53d"
+            ]
+        ]
+    },
+    {
+        "id": "1ffdef58.6c1c91",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Get all the event",
+        "info": "",
+        "x": 280,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "1c986580.fc2b1a",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1230,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2d596439.294c4c",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "{\"courseId\":2,\"eventPersonal\":4,\"eventName\":\"DIP Lecture 1\",\"eventType\":\"class\",\"roomId\":1,\"startDate\":\"2020-01-13\",\"endDate\":\"2020-01-13\",\"startTime\":\"04:00:19\",\"endTime\":\"05:00:19\",\"recurrent\":false,\"everyAfter\":1,\"everyAfterType\":\"day\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 520,
+        "wires": [
+            [
+                "a4807ef1.f882"
+            ]
+        ]
+    },
+    {
+        "id": "82c06c62.dbe09",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 790,
+        "y": 520,
+        "wires": [
+            [
+                "5e8efde2.d0b5a4",
+                "d53b5991.d737c8"
+            ]
+        ]
+    },
+    {
+        "id": "5e8efde2.d0b5a4",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "a4807ef1.f882",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6ImZkZDRkYTUxLTMzNzYtNDg4MC05YjE4LTdmMTliNWQyNjZkNCIsImVtYWlsIjoidGVhY2hlci50d29AdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3Njk3M30.j6v8NxlYwRLZwziNDWbNDXKHf5lUtaRMB5BU6yfeoAc\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 520,
+        "wires": [
+            [
+                "82c06c62.dbe09"
+            ]
+        ]
+    },
+    {
+        "id": "3ccd5d8e.4a7a02",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 520,
+        "y": 440,
+        "wires": [
+            [
+                "82c06c62.dbe09"
+            ]
+        ]
+    },
+    {
+        "id": "21203373.b9980c",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Create a new event",
+        "info": "",
+        "x": 290,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d53b5991.d737c8",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1230,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "1d6b0047.901c8",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "{\"courseId\":2,\"eventPersonal\":4,\"eventName\":\"DIP Lecture 1\",\"eventType\":\"class\",\"roomId\":0,\"startDate\":\"3026-07-10\",\"endDate\":\"3026-07-10\",\"startTime\":\"14:00:19\",\"endTime\":\"16:00:19\",\"recurrent\":false,\"everyAfter\":1,\"everyAfterType\":\"day\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 820,
+        "wires": [
+            [
+                "5483ed23.25a304"
+            ]
+        ]
+    },
+    {
+        "id": "3407f01.5dd5d1",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 790,
+        "y": 820,
+        "wires": [
+            [
+                "c6fee3b1.e428e",
+                "804445f5.5dbbb8"
+            ]
+        ]
+    },
+    {
+        "id": "c6fee3b1.e428e",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "5483ed23.25a304",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6ImZkZDRkYTUxLTMzNzYtNDg4MC05YjE4LTdmMTliNWQyNjZkNCIsImVtYWlsIjoidGVhY2hlci50d29AdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3MjU2Mn0.IQqLIamCJEBPsyspDoWZFjNHAaJxjDNBTXlJWepj0NA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 820,
+        "wires": [
+            [
+                "3407f01.5dd5d1"
+            ]
+        ]
+    },
+    {
+        "id": "d9889498.121db8",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 520,
+        "y": 740,
+        "wires": [
+            [
+                "3407f01.5dd5d1"
+            ]
+        ]
+    },
+    {
+        "id": "a3a3ec5d.ae02c",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Create a new event with non valid room_id",
+        "info": "",
+        "x": 370,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "804445f5.5dbbb8",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1230,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "97eb15da.38c2f8",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 1080,
+        "wires": [
+            [
+                "9cba3e76.70449"
+            ]
+        ]
+    },
+    {
+        "id": "b027a0a4.b00cc",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/eventStatus/5",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 790,
+        "y": 1080,
+        "wires": [
+            [
+                "179bb261.968dee",
+                "e1e95090.024b3"
+            ]
+        ]
+    },
+    {
+        "id": "179bb261.968dee",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "9cba3e76.70449",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3NzE0Nn0.jY9EkuddguaRMiEGfJ3cJ6k4ubCM4KlByAZW_E-jDJA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 1080,
+        "wires": [
+            [
+                "b027a0a4.b00cc"
+            ]
+        ]
+    },
+    {
+        "id": "4ec40d8c.7cc444",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 520,
+        "y": 1000,
+        "wires": [
+            [
+                "b027a0a4.b00cc"
+            ]
+        ]
+    },
+    {
+        "id": "e8df1475.59be28",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: active/deactivate event with greated date than the cureent date",
+        "info": "",
+        "x": 430,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "e1e95090.024b3",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1230,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "c6dde8ed.a40988",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 1400,
+        "wires": [
+            [
+                "f82e96f3.ba2cd8"
+            ]
+        ]
+    },
+    {
+        "id": "dca7732c.983b1",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/eventStatus/74",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 790,
+        "y": 1400,
+        "wires": [
+            [
+                "5d50888e.f6ebf8",
+                "597221c4.3271b"
+            ]
+        ]
+    },
+    {
+        "id": "5d50888e.f6ebf8",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "f82e96f3.ba2cd8",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3NzE0Nn0.jY9EkuddguaRMiEGfJ3cJ6k4ubCM4KlByAZW_E-jDJA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 1400,
+        "wires": [
+            [
+                "dca7732c.983b1"
+            ]
+        ]
+    },
+    {
+        "id": "d14ed2e8.8fed5",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 520,
+        "y": 1320,
+        "wires": [
+            [
+                "dca7732c.983b1"
+            ]
+        ]
+    },
+    {
+        "id": "69f95e81.c822d",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: trying to activate an event",
+        "info": "",
+        "x": 310,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "597221c4.3271b",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1230,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "9cfb35be.176468",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "{\"courseId\":2,\"eventPersonal\":4,\"eventName\":\"DIP Lecture 1\",\"eventType\":\"class\",\"roomId\":1,\"startDate\":\"2020-11-10\",\"startTime\":\"12:00:19\",\"endDate\":\"2020-11-10\",\"endTime\":\"12:00:19\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 1720,
+        "wires": [
+            [
+                "9a96b76a.987118"
+            ]
+        ]
+    },
+    {
+        "id": "fa97d211.e31b2",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/73",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 1720,
+        "wires": [
+            [
+                "d518f167.13329",
+                "3da3caf9.5357c6"
+            ]
+        ]
+    },
+    {
+        "id": "d518f167.13329",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "9a96b76a.987118",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3NzE0Nn0.jY9EkuddguaRMiEGfJ3cJ6k4ubCM4KlByAZW_E-jDJA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 1720,
+        "wires": [
+            [
+                "fa97d211.e31b2"
+            ]
+        ]
+    },
+    {
+        "id": "7082ea7e.a89434",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 1640,
+        "wires": [
+            [
+                "fa97d211.e31b2"
+            ]
+        ]
+    },
+    {
+        "id": "31697db7.c941e2",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Update an Event when event time passed",
+        "info": "",
+        "x": 380,
+        "y": 1600,
+        "wires": []
+    },
+    {
+        "id": "3da3caf9.5357c6",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "d714d422.889f18",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 270,
+        "y": 2040,
+        "wires": [
+            [
+                "d0861621.d98ec8"
+            ]
+        ]
+    },
+    {
+        "id": "c8de4255.1a5e5",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/73",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 830,
+        "y": 2040,
+        "wires": [
+            [
+                "88d3e2f.86c1d2",
+                "8ff9d301.1a29f"
+            ]
+        ]
+    },
+    {
+        "id": "88d3e2f.86c1d2",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1150,
+        "y": 2120,
+        "wires": []
+    },
+    {
+        "id": "d0861621.d98ec8",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg3NzE0Nn0.jY9EkuddguaRMiEGfJ3cJ6k4ubCM4KlByAZW_E-jDJA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 560,
+        "y": 2040,
+        "wires": [
+            [
+                "c8de4255.1a5e5"
+            ]
+        ]
+    },
+    {
+        "id": "8e0b64ac.7235b8",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 560,
+        "y": 1960,
+        "wires": [
+            [
+                "c8de4255.1a5e5"
+            ]
+        ]
+    },
+    {
+        "id": "81a7a1be.d451",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Get an event by ID",
+        "info": "",
+        "x": 330,
+        "y": 1920,
+        "wires": []
+    },
+    {
+        "id": "8ff9d301.1a29f",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1270,
+        "y": 2040,
+        "wires": []
+    },
+    {
+        "id": "4fc28c19.6edbb4",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 270,
+        "y": 2320,
+        "wires": [
+            [
+                "f6e7f178.29595"
+            ]
+        ]
+    },
+    {
+        "id": "adbd7092.bae1",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/getEventsByEventPersonal",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 830,
+        "y": 2320,
+        "wires": [
+            [
+                "e74a840a.82c898",
+                "3e85a0f0.86ea5"
+            ]
+        ]
+    },
+    {
+        "id": "e74a840a.82c898",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1150,
+        "y": 2400,
+        "wires": []
+    },
+    {
+        "id": "f6e7f178.29595",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcl9pZCI6IjJjMTlmM2FhLWNmYzEtNDkxYi04MGUwLWQ1YWI0YTYwZDRmZiIsImVtYWlsIjoidGVhY2hlci50aHJlZUB0dW5pLmZpIiwidXNlclR5cGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNTc4ODc5MzEzfQ.yPt0UUJ6eYczQBo3aZCEyNA-AEMUUpKkOt5_jYTtw4U\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 560,
+        "y": 2320,
+        "wires": [
+            [
+                "adbd7092.bae1"
+            ]
+        ]
+    },
+    {
+        "id": "78230cd3.a4bf84",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 560,
+        "y": 2240,
+        "wires": [
+            [
+                "adbd7092.bae1"
+            ]
+        ]
+    },
+    {
+        "id": "31443f7f.cfc71",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Show all the events assigned to the user",
+        "info": "",
+        "x": 400,
+        "y": 2200,
+        "wires": []
+    },
+    {
+        "id": "3e85a0f0.86ea5",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1270,
+        "y": 2320,
+        "wires": []
+    },
+    {
+        "id": "987cebe1.b9a358",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 2600,
+        "wires": [
+            [
+                "15401211.36ee9e"
+            ]
+        ]
+    },
+    {
+        "id": "8af288d0.d68808",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/getEventsByEventPersonal",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 2600,
+        "wires": [
+            [
+                "9794830a.9e3e3",
+                "b9c7a288.62c23"
+            ]
+        ]
+    },
+    {
+        "id": "9794830a.9e3e3",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 2720,
+        "wires": []
+    },
+    {
+        "id": "15401211.36ee9e",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9pZCI6ImRlOTA2ZGI2LWU4NjctNDJiYS1iZGMzLTYwMzBiNTVlYWUyYSIsImVtYWlsIjoic3R1ZGVudC5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoic3R1ZGVudCIsImlhdCI6MTU3ODg3OTQyOX0.-jAn1oqcZE7hrrzS1LUkmVAgOlPcLj1klSx70yHY6Bg\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 2600,
+        "wires": [
+            [
+                "8af288d0.d68808"
+            ]
+        ]
+    },
+    {
+        "id": "3070b166.18516e",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 2520,
+        "wires": [
+            [
+                "8af288d0.d68808"
+            ]
+        ]
+    },
+    {
+        "id": "cdb929d1.457738",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Show all the events assigned to the user_User logged in as student",
+        "info": "",
+        "x": 460,
+        "y": 2480,
+        "wires": []
+    },
+    {
+        "id": "b9c7a288.62c23",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 2600,
+        "wires": []
+    },
+    {
+        "id": "aec34974.18eef8",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 2920,
+        "wires": [
+            [
+                "63c527bc.3c3588"
+            ]
+        ]
+    },
+    {
+        "id": "d39425da.c1afe8",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 2920,
+        "wires": [
+            [
+                "6d9ea022.26458",
+                "4ce48eff.6afe"
+            ]
+        ]
+    },
+    {
+        "id": "6d9ea022.26458",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 3000,
+        "wires": []
+    },
+    {
+        "id": "63c527bc.3c3588",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9pZCI6ImRlOTA2ZGI2LWU4NjctNDJiYS1iZGMzLTYwMzBiNTVlYWUyYSIsImVtYWlsIjoic3R1ZGVudC5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoic3R1ZGVudCIsImlhdCI6MTU3ODg3OTQyOX0.-jAn1oqcZE7hrrzS1LUkmVAgOlPcLj1klSx70yHY6Bg\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 2920,
+        "wires": [
+            [
+                "d39425da.c1afe8"
+            ]
+        ]
+    },
+    {
+        "id": "615380de.aead6",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 2840,
+        "wires": [
+            [
+                "d39425da.c1afe8"
+            ]
+        ]
+    },
+    {
+        "id": "52ece6a1.a19438",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Show all the events_User logged in as student",
+        "info": "",
+        "x": 400,
+        "y": 2800,
+        "wires": []
+    },
+    {
+        "id": "4ce48eff.6afe",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 2920,
+        "wires": []
+    },
+    {
+        "id": "475d59d0.a0dc88",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 3240,
+        "wires": [
+            [
+                "52863316.b615cc"
+            ]
+        ]
+    },
+    {
+        "id": "71d108c1.bda638",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "DELETE",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/61",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 3240,
+        "wires": [
+            [
+                "a853193e.1653b8",
+                "c1f06dae.197a9"
+            ]
+        ]
+    },
+    {
+        "id": "a853193e.1653b8",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 3340,
+        "wires": []
+    },
+    {
+        "id": "52863316.b615cc",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcl9pZCI6ImRlOTA2ZGI2LWU4NjctNDJiYS1iZGMzLTYwMzBiNTVlYWUyYSIsImVtYWlsIjoic3R1ZGVudC5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoic3R1ZGVudCIsImlhdCI6MTU3ODg3OTQyOX0.-jAn1oqcZE7hrrzS1LUkmVAgOlPcLj1klSx70yHY6Bg\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 3240,
+        "wires": [
+            [
+                "71d108c1.bda638"
+            ]
+        ]
+    },
+    {
+        "id": "62a59931.7ef728",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 3160,
+        "wires": [
+            [
+                "71d108c1.bda638"
+            ]
+        ]
+    },
+    {
+        "id": "75b84a8b.c238f4",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Delete an Event_User a student",
+        "info": "",
+        "x": 350,
+        "y": 3120,
+        "wires": []
+    },
+    {
+        "id": "c1f06dae.197a9",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 3240,
+        "wires": []
+    },
+    {
+        "id": "f92de176.3185b",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 3500,
+        "wires": [
+            [
+                "3ef8f39f.5f3f8c"
+            ]
+        ]
+    },
+    {
+        "id": "1197df2e.40a981",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "DELETE",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/64",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 3500,
+        "wires": [
+            [
+                "e0204811.53e3d8",
+                "edd3f012.e3ac4"
+            ]
+        ]
+    },
+    {
+        "id": "e0204811.53e3d8",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 3580,
+        "wires": []
+    },
+    {
+        "id": "3ef8f39f.5f3f8c",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcl9pZCI6IjJjMTlmM2FhLWNmYzEtNDkxYi04MGUwLWQ1YWI0YTYwZDRmZiIsImVtYWlsIjoidGVhY2hlci50aHJlZUB0dW5pLmZpIiwidXNlclR5cGUiOiJ0ZWFjaGVyIiwiaWF0IjoxNTc4ODgwMzkwfQ.FImuWEqoEQPTPGLG_yc3o0ltwrYFg_GYI2JuhYM56GA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 3500,
+        "wires": [
+            [
+                "1197df2e.40a981"
+            ]
+        ]
+    },
+    {
+        "id": "37c52fd3.04314",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 3420,
+        "wires": [
+            [
+                "1197df2e.40a981"
+            ]
+        ]
+    },
+    {
+        "id": "d37e6db4.b3ec6",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Deleteing an Event with different user who is not the course personnal",
+        "info": "",
+        "x": 470,
+        "y": 3380,
+        "wires": []
+    },
+    {
+        "id": "edd3f012.e3ac4",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 3500,
+        "wires": []
+    },
+    {
+        "id": "97ba4c24.5c38a",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 3760,
+        "wires": [
+            [
+                "6d6329d7.e39c68"
+            ]
+        ]
+    },
+    {
+        "id": "ec109742.c6c948",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "DELETE",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/64",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 3760,
+        "wires": [
+            [
+                "6adb8223.77edcc",
+                "901b1b73.d3f4d8"
+            ]
+        ]
+    },
+    {
+        "id": "6adb8223.77edcc",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 3840,
+        "wires": []
+    },
+    {
+        "id": "6d6329d7.e39c68",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg4MDUxNn0.vvNopTuqb-LRUcCtpEK3y1w-QhQCgZkyUFHhPUsNWrA\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 3760,
+        "wires": [
+            [
+                "ec109742.c6c948"
+            ]
+        ]
+    },
+    {
+        "id": "66aa9ac2.bdbb44",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 3680,
+        "wires": [
+            [
+                "ec109742.c6c948"
+            ]
+        ]
+    },
+    {
+        "id": "4f03928a.45452c",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Delete an event with the course personnal",
+        "info": "",
+        "x": 380,
+        "y": 3640,
+        "wires": []
+    },
+    {
+        "id": "901b1b73.d3f4d8",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 3760,
+        "wires": []
+    },
+    {
+        "id": "3fc6ff60.f4122",
+        "type": "inject",
+        "z": "875b8187.8a65b",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 4000,
+        "wires": [
+            [
+                "e1c6b3ed.e2ffa"
+            ]
+        ]
+    },
+    {
+        "id": "722cd11f.65f68",
+        "type": "http request",
+        "z": "875b8187.8a65b",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/event/attendanceResult",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 810,
+        "y": 4000,
+        "wires": [
+            [
+                "65080a52.5efd74",
+                "31f3491b.7e1b66"
+            ]
+        ]
+    },
+    {
+        "id": "65080a52.5efd74",
+        "type": "http response",
+        "z": "875b8187.8a65b",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 4080,
+        "wires": []
+    },
+    {
+        "id": "e1c6b3ed.e2ffa",
+        "type": "function",
+        "z": "875b8187.8a65b",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcl9pZCI6IjQzMTdhY2M4LTk2ZjctNDRjYy04YjIyLTdiN2I2OGE4YmI3ZCIsImVtYWlsIjoidGVhY2hlci5vbmVAdHVuaS5maSIsInVzZXJUeXBlIjoidGVhY2hlciIsImlhdCI6MTU3ODg4MDUxNn0.vvNopTuqb-LRUcCtpEK3y1w-QhQCgZkyUFHhPUsNWrA\",\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 4000,
+        "wires": [
+            [
+                "722cd11f.65f68"
+            ]
+        ]
+    },
+    {
+        "id": "ddae34b2.e3f068",
+        "type": "template",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 540,
+        "y": 3920,
+        "wires": [
+            [
+                "722cd11f.65f68"
+            ]
+        ]
+    },
+    {
+        "id": "610524bb.7a769c",
+        "type": "comment",
+        "z": "875b8187.8a65b",
+        "name": "Event_API_Testing: Testing attendance",
+        "info": "",
+        "x": 310,
+        "y": 3880,
+        "wires": []
+    },
+    {
+        "id": "31f3491b.7e1b66",
+        "type": "debug",
+        "z": "875b8187.8a65b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1250,
+        "y": 4000,
+        "wires": []
+    }
+]

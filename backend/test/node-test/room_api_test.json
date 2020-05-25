@@ -1,0 +1,542 @@
+[
+    {
+        "id": "bb04df79.65acb",
+        "type": "tab",
+        "label": "ROOM_API",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6a590d57.9426d4",
+        "type": "subflow",
+        "name": "Subflow 1",
+        "info": "",
+        "in": [],
+        "out": []
+    },
+    {
+        "id": "c0ba0b62.ba4728",
+        "type": "inject",
+        "z": "bb04df79.65acb",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "{\"name\":\"TC-117\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 300,
+        "wires": [
+            [
+                "109e3bb.bcb70c4"
+            ]
+        ]
+    },
+    {
+        "id": "6cfd93f9.cf103c",
+        "type": "http request",
+        "z": "bb04df79.65acb",
+        "name": "MAKE req",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/room",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "bearer",
+        "x": 710,
+        "y": 300,
+        "wires": [
+            [
+                "ef806fca.615e3",
+                "5d4f1cfc.6fef94"
+            ]
+        ]
+    },
+    {
+        "id": "ef806fca.615e3",
+        "type": "http response",
+        "z": "bb04df79.65acb",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1010,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "5d4f1cfc.6fef94",
+        "type": "debug",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1670,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "109e3bb.bcb70c4",
+        "type": "function",
+        "z": "bb04df79.65acb",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 300,
+        "wires": [
+            [
+                "6cfd93f9.cf103c"
+            ]
+        ]
+    },
+    {
+        "id": "8bedd418.e16d18",
+        "type": "template",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "6cfd93f9.cf103c"
+            ]
+        ]
+    },
+    {
+        "id": "51a3874d.fab768",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_Testing: Add a new room",
+        "info": "",
+        "x": 200,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "3e996490.066dcc",
+        "type": "inject",
+        "z": "bb04df79.65acb",
+        "name": "Trigger",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "277c8a56.25f396"
+            ]
+        ]
+    },
+    {
+        "id": "89cddf37.08392",
+        "type": "http request",
+        "z": "bb04df79.65acb",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/room",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 730,
+        "y": 580,
+        "wires": [
+            [
+                "6b8417ba.366af8",
+                "5d4f1cfc.6fef94"
+            ]
+        ]
+    },
+    {
+        "id": "6b8417ba.366af8",
+        "type": "http response",
+        "z": "bb04df79.65acb",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1030,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "277c8a56.25f396",
+        "type": "function",
+        "z": "bb04df79.65acb",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 580,
+        "wires": [
+            [
+                "89cddf37.08392"
+            ]
+        ]
+    },
+    {
+        "id": "ed0c0b58.6ff928",
+        "type": "template",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 440,
+        "y": 500,
+        "wires": [
+            [
+                "89cddf37.08392"
+            ]
+        ]
+    },
+    {
+        "id": "fa3f5c60.a5317",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_Testing: Get all the room",
+        "info": "",
+        "x": 200,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "c4ccce53.bd219",
+        "type": "inject",
+        "z": "bb04df79.65acb",
+        "name": "JSON_PAYLOAD",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 160,
+        "y": 800,
+        "wires": [
+            [
+                "5f75fd65.861504"
+            ]
+        ]
+    },
+    {
+        "id": "3b66e405.e9078c",
+        "type": "http request",
+        "z": "bb04df79.65acb",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/room/6",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "",
+        "x": 730,
+        "y": 800,
+        "wires": [
+            [
+                "d661aa53.c19e08",
+                "5d4f1cfc.6fef94"
+            ]
+        ]
+    },
+    {
+        "id": "d661aa53.c19e08",
+        "type": "http response",
+        "z": "bb04df79.65acb",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1030,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "5f75fd65.861504",
+        "type": "function",
+        "z": "bb04df79.65acb",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 800,
+        "wires": [
+            [
+                "3b66e405.e9078c"
+            ]
+        ]
+    },
+    {
+        "id": "f39b7cf5.2b433",
+        "type": "template",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 440,
+        "y": 720,
+        "wires": [
+            [
+                "3b66e405.e9078c"
+            ]
+        ]
+    },
+    {
+        "id": "adbde402.f8a9c8",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_Testing: Update a room by the ID",
+        "info": "",
+        "x": 230,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "53b2fdb2.5b7a74",
+        "type": "inject",
+        "z": "bb04df79.65acb",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 1040,
+        "wires": [
+            [
+                "69b550b8.299ff"
+            ]
+        ]
+    },
+    {
+        "id": "e30ade7.e17ba2",
+        "type": "http request",
+        "z": "bb04df79.65acb",
+        "name": "MAKE req",
+        "method": "DELETE",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/room/6",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "bearer",
+        "x": 710,
+        "y": 1040,
+        "wires": [
+            [
+                "3c4c4ec4.601452",
+                "5d4f1cfc.6fef94"
+            ]
+        ]
+    },
+    {
+        "id": "3c4c4ec4.601452",
+        "type": "http response",
+        "z": "bb04df79.65acb",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1010,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "69b550b8.299ff",
+        "type": "function",
+        "z": "bb04df79.65acb",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 1040,
+        "wires": [
+            [
+                "e30ade7.e17ba2"
+            ]
+        ]
+    },
+    {
+        "id": "3209a0d0.af1f1",
+        "type": "template",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 440,
+        "y": 960,
+        "wires": [
+            [
+                "e30ade7.e17ba2"
+            ]
+        ]
+    },
+    {
+        "id": "ae9e7dea.96a2",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_Testing: delete a room by ID",
+        "info": "",
+        "x": 210,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "daf6e73f.aba9a8",
+        "type": "inject",
+        "z": "bb04df79.65acb",
+        "name": "JSON_OBJ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 150,
+        "y": 1260,
+        "wires": [
+            [
+                "a3d99c47.b7755"
+            ]
+        ]
+    },
+    {
+        "id": "f81555ad.156c28",
+        "type": "http request",
+        "z": "bb04df79.65acb",
+        "name": "MAKE req",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://beacon-attendance-tie.herokuapp.com/v1/room/6",
+        "tls": "",
+        "persist": true,
+        "proxy": "",
+        "authType": "bearer",
+        "x": 710,
+        "y": 1260,
+        "wires": [
+            [
+                "78612eb5.8cb9a",
+                "5d4f1cfc.6fef94"
+            ]
+        ]
+    },
+    {
+        "id": "78612eb5.8cb9a",
+        "type": "http response",
+        "z": "bb04df79.65acb",
+        "name": "HTTP_RESPONSE",
+        "statusCode": "",
+        "headers": {},
+        "x": 1010,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "a3d99c47.b7755",
+        "type": "function",
+        "z": "bb04df79.65acb",
+        "name": "Pass API_KEY",
+        "func": "msg.headers =  {\n        \"api_key\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywidXNlcl9pZCI6IjljMzFlNDk3LTAzOTMtNDNmMy1hZjcxLWY4MjZkNDllM2ZmMyIsImVtYWlsIjoiYWRtaW4ub25lQHR1bmkuZmkiLCJ1c2VyVHlwZSI6ImFkbWluIiwiaWF0IjoxNTc4NDk0NjkwfQ.CD9OLyYfnuwT6UjkLNtDIZtwloDdLuiHrzlMzCjG65s\"\n    }\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 1260,
+        "wires": [
+            [
+                "f81555ad.156c28"
+            ]
+        ]
+    },
+    {
+        "id": "4ddec72d.7e5188",
+        "type": "template",
+        "z": "bb04df79.65acb",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 420,
+        "y": 1180,
+        "wires": [
+            [
+                "f81555ad.156c28"
+            ]
+        ]
+    },
+    {
+        "id": "67001512.a772bc",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_Testing: Get A room by its ID",
+        "info": "",
+        "x": 220,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "39c366c.92a149a",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_END POINT testing",
+        "info": "****# Room API basic Endpoint testing",
+        "x": 770,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "9700e4b8.e42aa8",
+        "type": "comment",
+        "z": "bb04df79.65acb",
+        "name": "Room_API_END POINT Error Message Testing",
+        "info": "****# Room API basic Endpoint testing",
+        "x": 860,
+        "y": 1400,
+        "wires": []
+    }
+]
